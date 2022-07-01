@@ -7,14 +7,28 @@ It contains one simple scenario for automating a test of a simple form hosted at
 Running this should be fairly simple.
 You'll need a web browser and the appropriate driver for it (Chrome/Chromium and ChromeDriver or Firefox and GeckoDriver).
 
-After cloning this repository, you'll need `pip` 
-```sudo apt install python3-pip```
+After cloning this repository, you'll need `pip`:
+
+```bash 
+sudo apt install python3-pip
+```
+
 Then, you can use `pip` to install `pipenv`
-```pip3 install pipenv```
+
+``` bash
+pip3 install pipenv
+```
+
 ... and then you can use `pipenv` to install Selenium and Behave:
-```pipenv install```
+
+``` bash
+pipenv install
+```
 
 With that done, you should be able to run the automated scenario using:
-```pipenv run behave```
+
+``` bash
+pipenv run behave
+```
 
 The browser can be selected by editing `behave.ini`.

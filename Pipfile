@@ -9,5 +9,5 @@ verify_ssl = true
 selenium = "*"
 behave = "*"
 
-[requires]
-python_version = "3.6"
+#[requires]
+#python_version = "3.7"

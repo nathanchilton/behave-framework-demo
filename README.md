@@ -9,7 +9,7 @@ You'll need a web browser and the appropriate driver for it (Chrome/Chromium and
 
 After cloning this repository, you'll need `pip`:
 
-```bash 
+```bash
 sudo apt install python3-pip
 ```
 

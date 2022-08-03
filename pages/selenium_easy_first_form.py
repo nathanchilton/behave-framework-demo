@@ -15,7 +15,8 @@ class SeleniumEasyFirstForm:
         self.context = context
         self.browser = context.browser
 
-    URL = 'https://www.seleniumeasy.com/test/basic-first-form-demo.html'
+    # URL = 'https://www.seleniumeasy.com/test/basic-first-form-demo.html'
+    URL = 'http://localhost:8000/'
 
     INPUT_A = (By.ID, 'sum1')
     INPUT_B = (By.ID, 'sum2')

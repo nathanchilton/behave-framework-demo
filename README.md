@@ -23,22 +23,38 @@ If you're running on a Debian-based distribution of Linux:
 sudo apt install python3-pip
 ```
 
-Then, you can use `pip` to install `pipenv`
+Inside this project, create a [Python virtual environment](https://docs.python.org/3/tutorial/venv.html)
+using the [venv](https://docs.python.org/3/library/venv.html) module
+to manage dependency packages locally:
 
-``` bash
-pip3 install pipenv
+```bash
+$ python3 -m venv venv
 ```
 
-... and then you can use `pipenv` to install Selenium and Behave:
+Activate the virtual environment:
+```bash
+$ source venv/bin/activate
+```
 
+Install the dependencies:
 ``` bash
-pipenv install
+pip3 install -r requirements.txt
+```
+
+Install the required browsers:
+``` bash
+playwright install
 ```
 
 With that done, you should be able to run the automated scenario using:
 
 ``` bash
 pipenv run behave
+```
+
+To execute tests in parallel, use `behavex`:
+``` bash
+behavex -t @TAG --parallel-processes 4 --parallel-scheme scenario
 ```
 
 The browser can be selected by editing `behave.ini`.

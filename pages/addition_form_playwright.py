@@ -16,6 +16,7 @@ class EasyAdditionForm:
 
     URL = 'http://localhost:8000/'
 
+    # locators
     INPUT_A = '#sum1'
     INPUT_B = '#sum2'
     BUTTON_GET_TOTAL = "form#gettotal button"

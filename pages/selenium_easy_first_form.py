@@ -1,7 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-
 class SeleniumEasyFirstForm:
     instance = None
 
@@ -39,6 +38,5 @@ class SeleniumEasyFirstForm:
 
     def result(self):
         return self.browser.find_element(*self.DISPLAY_VALUE).text
-
 
 selenium_easy = SeleniumEasyFirstForm.get_instance()

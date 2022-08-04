@@ -23,38 +23,36 @@ If you're running on a Debian-based distribution of Linux:
 sudo apt install python3-pip
 ```
 
-Inside this project, create a [Python virtual environment](https://docs.python.org/3/tutorial/venv.html)
+### create a [Python virtual environment](https://docs.python.org/3/tutorial/venv.html)
 using the [venv](https://docs.python.org/3/library/venv.html) module
 to manage dependency packages locally:
-
 ```bash
 $ python3 -m venv venv
 ```
 
-Activate the virtual environment:
+### Activate the virtual environment:
 ```bash
 $ source venv/bin/activate
 ```
 
-Install the dependencies:
+
+### Install the dependencies:
 ``` bash
 pip3 install -r requirements.txt
 ```
 
-Install the required browsers:
+
+### Install the required browsers:
 ``` bash
 playwright install
 ```
 
-With that done, you should be able to run the automated scenario using:
-
+### With that done, you should be able to run the automated scenario using:
 ``` bash
-pipenv run behave
+behave
 ```
 
-To execute tests in parallel, use `behavex`:
+### To execute tests in parallel, use `behavex`:
 ``` bash
 behavex -t @TAG --parallel-processes 4 --parallel-scheme scenario
 ```
-
-The browser can be selected by editing `behave.ini`.

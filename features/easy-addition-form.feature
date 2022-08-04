@@ -1,4 +1,4 @@
-Feature: Selenium Easy
+Feature: Easy Addition Form
 
     Scenario: I can use the form to get the sum of two numbers
         Given I am on the Basic First Form Demo Page

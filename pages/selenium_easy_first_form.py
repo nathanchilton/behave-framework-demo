@@ -1,21 +1,21 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+import re
+from playwright.sync_api import Page, expect
 
-
-class SeleniumEasyFirstForm:
+class EasyAdditionForm:
     instance = None
 
     @classmethod
     def get_instance(cls):
         if cls.instance is None:
-            cls.instance = SeleniumEasyFirstForm()
+            cls.instance = EasyAdditionForm()
         return cls.instance
 
     def set_context(self, context):
         self.context = context
-        self.browser = context.browser
 
-    # URL = 'https://www.seleniumeasy.com/test/basic-first-form-demo.html'
+    # Assumes that you have started a local web server,
+    # using something like:
+    #   python -m http.server 8000
     URL = 'http://localhost:8000/'
 
     INPUT_A = (By.ID, 'sum1')
@@ -40,5 +40,4 @@ class SeleniumEasyFirstForm:
     def result(self):
         return self.browser.find_element(*self.DISPLAY_VALUE).text
 
-
-selenium_easy = SeleniumEasyFirstForm.get_instance()
+addition_form = EasyAdditionForm.get_instance()

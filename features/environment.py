@@ -1,7 +1,14 @@
-from framework.browser_factory import get_browser_driver
+from behave import *
+import time
+from playwright.sync_api import sync_playwright
 
 def before_all(context):
-    context.browser = get_browser_driver(context.config.userdata['browser'])
+    playwright = sync_playwright().start()
+    context.playwright = playwright
+
+    browser_ = playwright.chromium.launch(headless=False)
+    context_ = browser_.new_context()
+    context.page = context_.new_page()
 
 def after_all(context):
-    context.browser.quit()
+    context.playwright.stop()

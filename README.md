@@ -1,6 +1,6 @@
 # behave-framework-demo
 
-When I put this together, all of my test automation experience (over 2.5 years) had been done in Ruby, using SitePrism -- first with RSpec and then with Cucumber.
+Back in 2019, when I put this together, all of my test automation experience (over 2.5 years) had been done in Ruby, using SitePrism -- first with RSpec and then with Cucumber.
 
 Being a fan of Gherkin, I wanted to try automating scenarios using another language.  Python has a few different options, but Behave looks like the closest thing to what I'm used to with Cucumber.  I wasn't able to find anything comparable to SitePrism for Python but, after reading multiple articles and trying a few different approaches, I put this together, as a basic starting point for automating Gherkin scenarios, using Behave, with a very simple page object model.
 

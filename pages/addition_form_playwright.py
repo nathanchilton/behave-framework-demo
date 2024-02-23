@@ -1,6 +1,7 @@
 import re
 from playwright.sync_api import Page, expect
 
+
 class EasyAdditionForm:
     instance = None
 
@@ -14,11 +15,11 @@ class EasyAdditionForm:
         self.context = context
         self.page = context.page
 
-    URL = 'http://localhost:8080/'
+    URL = "http://localhost:8080"
 
     # locators
-    INPUT_A = '#sum1'
-    INPUT_B = '#sum2'
+    INPUT_A = "#sum1"
+    INPUT_B = "#sum2"
     BUTTON_GET_TOTAL = "form#gettotal button"
     DISPLAY_VALUE = "span#displayvalue"
 
@@ -36,5 +37,6 @@ class EasyAdditionForm:
 
     def result(self):
         return self.page.locator(self.DISPLAY_VALUE).text_content()
+
 
 addition_form = EasyAdditionForm.get_instance()

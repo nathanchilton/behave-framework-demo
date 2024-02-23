@@ -1,6 +1,6 @@
 # behave-framework-demo
 
-When I put this together, all of my test automation experience (over 2.5 years) had been done in Ruby, using SitePrism -- first with RSpec and then with Cucumber.
+Back in 2019, when I put this together, all of my test automation experience (over 2.5 years) had been done in Ruby, using SitePrism -- first with RSpec and then with Cucumber.
 
 Being a fan of Gherkin, I wanted to try automating scenarios using another language.  Python has a few different options, but Behave looks like the closest thing to what I'm used to with Cucumber.  I wasn't able to find anything comparable to SitePrism for Python but, after reading multiple articles and trying a few different approaches, I put this together, as a basic starting point for automating Gherkin scenarios, using Behave, with a very simple page object model.
 
@@ -16,29 +16,41 @@ python -m http.server 8000
 Running the test should be fairly simple.
 You'll need a web browser and the appropriate driver for it (Chrome/Chromium and ChromeDriver or Firefox and GeckoDriver).
 
-After cloning this repository, you'll need `pip`.
-If you're running on a Debian-based distribution of Linux:
-
+### Installing `pip`
+After cloning this repository, you will need `pip`.
+Assuming you have Python3 installed:
 ```bash
-sudo apt install python3-pip
+python -m ensurepip --upgrade
 ```
 
-Then, you can use `pip` to install `pipenv`
+### create a [Python virtual environment](https://docs.python.org/3/tutorial/venv.html)
+using the [venv](https://docs.python.org/3/library/venv.html) module
+to manage dependency packages locally:
+```bash
+python3 -m venv venv
+```
 
+### Activate the virtual environment:
+```bash
+source venv/bin/activate
+```
+
+### Install the dependencies:
 ``` bash
-pip3 install pipenv
+pip3 install -r requirements.txt
 ```
 
-... and then you can use `pipenv` to install Selenium and Behave:
-
+### Install the required browsers:
 ``` bash
-pipenv install
+playwright install
 ```
 
-With that done, you should be able to run the automated scenario using:
-
+### With that done, you should be able to run the automated scenario using:
 ``` bash
-pipenv run behave
+behave
 ```
 
-The browser can be selected by editing `behave.ini`.
+### To execute tests in parallel, use `behavex`:
+``` bash
+behavex -t @TAG --parallel-processes 4 --parallel-scheme scenario
+```

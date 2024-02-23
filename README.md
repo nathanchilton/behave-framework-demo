@@ -16,31 +16,29 @@ python -m http.server 8000
 Running the test should be fairly simple.
 You'll need a web browser and the appropriate driver for it (Chrome/Chromium and ChromeDriver or Firefox and GeckoDriver).
 
-After cloning this repository, you'll need `pip`.
-If you're running on a Debian-based distribution of Linux:
-
+### Installing `pip`
+After cloning this repository, you will need `pip`.
+Assuming you have Python3 installed:
 ```bash
-sudo apt install python3-pip
+python -m ensurepip --upgrade
 ```
 
 ### create a [Python virtual environment](https://docs.python.org/3/tutorial/venv.html)
 using the [venv](https://docs.python.org/3/library/venv.html) module
 to manage dependency packages locally:
 ```bash
-$ python3 -m venv venv
+python3 -m venv venv
 ```
 
 ### Activate the virtual environment:
 ```bash
-$ source venv/bin/activate
+source venv/bin/activate
 ```
-
 
 ### Install the dependencies:
 ``` bash
 pip3 install -r requirements.txt
 ```
-
 
 ### Install the required browsers:
 ``` bash

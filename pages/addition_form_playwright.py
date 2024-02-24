@@ -15,7 +15,7 @@ class EasyAdditionForm:
         self.context = context
         self.page = context.page
 
-    URL = "http://localhost:8080"
+    URL = "https://www.nathanchilton.com/webform/addition_form.html"
 
     # locators
     INPUT_A = "#sum1"

@@ -26,6 +26,7 @@ Originally developed in 2019, this project stemmed from the author's experience 
 1. Clone this repository.
    ``` bash
    git clone git@github.com:nathanchilton/behave-framework-demo.git
+   cd behave-framework-demo
    ```
 
 2. Ensure pip is installed:

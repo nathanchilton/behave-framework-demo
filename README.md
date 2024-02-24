@@ -20,6 +20,7 @@ Originally developed in 2019, this project stemmed from the author's experience 
 - Python 3 installed
 - Ensure that the `python` and `pip` commands are linked to Python 3
 - If both Python 2 and Python 3 are installed, use `python3` and `pip3` instead
+- Using macOS or Ubuntu Linux (Windows users should consider using the Windows Subsystem for Linux)
 
 ### Installation
 
@@ -29,19 +30,19 @@ Originally developed in 2019, this project stemmed from the author's experience 
    cd behave-framework-demo
    ```
 
-2. Ensure pip is installed:
-    ```bash
-    python -m ensurepip --upgrade
-    ```
-
-3. Create a Python virtual environment using venv:
+2. Create a Python virtual environment using venv:
     ```bash
     python -m venv venv
     ```
 
-4. Activate the virtual environment:
+3. Activate the virtual environment:
     ```bash
     source venv/bin/activate
+    ```
+
+4. Ensure pip is installed:
+    ```bash
+    python -m ensurepip --upgrade
     ```
 
 5. Install the dependencies:

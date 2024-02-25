@@ -19,8 +19,8 @@ Originally developed in 2019, this project stemmed from the author's experience 
 
 - Python 3 installed
 - Ensure that the `python` and `pip` commands are linked to Python 3
-- If both Python 2 and Python 3 are installed, use `python3` and `pip3` instead
-- Using macOS or Ubuntu Linux (Windows users should consider using the Windows Subsystem for Linux)
+- If both Python 2 and Python 3 are installed, you _may_ need to use `python3` and `pip3` instead of `python` and `pip`
+- Using macOS, Ubuntu Linux, or Windows
 
 ### Installation
 
@@ -36,11 +36,18 @@ Originally developed in 2019, this project stemmed from the author's experience 
     ```
 
 3. Activate the virtual environment:
+
+    macOS/Linux:
     ```bash
     source venv/bin/activate
     ```
 
-4. Ensure pip is installed:
+    Windows:
+    ```bash
+    venv\Scripts\activate
+    ```
+
+4. Ensure that `pip` is installed:
     ```bash
     python -m ensurepip --upgrade
     ```

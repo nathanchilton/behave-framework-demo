@@ -29,9 +29,7 @@ def set_click_get_total(context):
     addition_form.get_total()
 
 
-@when(
-    "I enter a number into the 'a' and 'b' input fields and click the 'Get Total' button"
-)
+@when("I enter numbers into the 'a' and 'b' input fields and click the 'Get Total' button")
 def step_impl_complete_form(context):
     addition_form.set_input_a("40")
     addition_form.set_input_b("2")

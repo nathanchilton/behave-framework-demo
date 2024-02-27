@@ -1,112 +1,97 @@
 Feature: The /planets route for The Star Wars API at swapi.dev
 
-    Background:
-        * url "https://swapi.dev/api"
-        * path "/planets"
+  Background:
+    * url "https://swapi.dev/api"
+    * path "/planets"
 
-    Scenario: /planets returns a list of all planets
+  Scenario: /planets returns a list of all planets
 
-        * print context.request_url
-        * method GET
-        * status 200
-        * assert response.count == 60
-        * assert response.results.length == 10
-        * print response
-        # * breakpoint
+    * print context.request_url
+    * method GET
+    * status 200
+    * assert response.count == 60
+    * assert response.results.length == 10
+    * print response
+    # * breakpoint
 
-        * text context.jsonschema =
-            """
-            {
-                "type": "object",
-                "properties": {
-                    "count": {
-                        "type": "number"
-                    },
-                    "next": {
-                        "type": "string"
-                    },
-                    "previous": {
-                        "type": [
-                            "string",
-                            "null"
-                        ]
-                    },
-                    "results": {
-                        "type": "array"
-                    }
-                }
-            }
-            """
-        * text context.planet_jsonschema =
-            """
-            {
-                "type": "array",
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "rotation_period": {
-                        "type": "string"
-                    },
-                    "orbital_period": {
-                        "type": "string"
-                    },
-                    "diameter": {
-                        "type": "string"
-                    },
-                    "climate": {
-                        "type": "string"
-                    },
-                    "gravity": {
-                        "type": "string"
-                    },
-                    "terrain": {
-                        "type": "string"
-                    },
-                    "surface_water": {
-                        "type": "string"
-                    },
-                    "population": {
-                        "type": "string"
-                    },
-                    "residents": {
-                        "type": "array"
-                    },
-                    "films": {
-                        "type": "array"
-                    },
-                    "created": {
-                        "type": "string"
-                    },
-                    "edited": {
-                        "type": "string"
-                    },
-                    "url": {
-                        "type": "string"
-                    }
-                }
-            }
-            """
-        * validate response using jsonschema in context.jsonschema
+    # Validate top-level response
+    * text context.jsonschema =
+      """
+      {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          },
+          "next": {
+            "type": "string"
+          },
+          "previous": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "results": {
+            "type": "array"
+          }
+        }
+      }
+      """
+    * validate response using jsonschema in context.jsonschema
 
-        # Planet schema:
-        # "name": {"type": "string"},
-        # "rotation_period": {"type": "string"},
-        # "orbital_period": {"type": "string"},
-        # "diameter": {"type": "string"},
-        # "climate": {"type": "string"},
-        # "gravity": {"type": "string"},
-        # "terrain": {"type": "string"},
-        # "surface_water": {"type": "string"},
-        # "population": {"type": "string"},
-        # "residents": {"type": "array"},
-        # "films": {"type": "array"},
-        # "created": {"type": "string"},
-        # "edited": {"type": "string"},
-        # "url": {"type": "string"}
-
-        * validate response.results using jsonschema in context.planet_jsonschema
-
+    # Validate the values in the "results" array
+    * text context.planet_jsonschema =
+      """
+      {
+        "type": "array",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "rotation_period": {
+            "type": "string"
+          },
+          "orbital_period": {
+            "type": "string"
+          },
+          "diameter": {
+            "type": "string"
+          },
+          "climate": {
+            "type": "string"
+          },
+          "gravity": {
+            "type": "string"
+          },
+          "terrain": {
+            "type": "string"
+          },
+          "surface_water": {
+            "type": "string"
+          },
+          "population": {
+            "type": "string"
+          },
+          "residents": {
+            "type": "array"
+          },
+          "films": {
+            "type": "array"
+          },
+          "created": {
+            "type": "string"
+          },
+          "edited": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+      """
+    * validate response.results using jsonschema in context.planet_jsonschema
 
 # response = DotMap(json.loads(context.response.text))
 

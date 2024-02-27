@@ -37,7 +37,75 @@ Feature: The /planets route for The Star Wars API at swapi.dev
                 }
             }
             """
+        * text context.planet_jsonschema =
+            """
+            {
+                "type": "array",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "rotation_period": {
+                        "type": "string"
+                    },
+                    "orbital_period": {
+                        "type": "string"
+                    },
+                    "diameter": {
+                        "type": "string"
+                    },
+                    "climate": {
+                        "type": "string"
+                    },
+                    "gravity": {
+                        "type": "string"
+                    },
+                    "terrain": {
+                        "type": "string"
+                    },
+                    "surface_water": {
+                        "type": "string"
+                    },
+                    "population": {
+                        "type": "string"
+                    },
+                    "residents": {
+                        "type": "array"
+                    },
+                    "films": {
+                        "type": "array"
+                    },
+                    "created": {
+                        "type": "string"
+                    },
+                    "edited": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    }
+                }
+            }
+            """
         * validate response using jsonschema in context.jsonschema
+
+        # Planet schema:
+        # "name": {"type": "string"},
+        # "rotation_period": {"type": "string"},
+        # "orbital_period": {"type": "string"},
+        # "diameter": {"type": "string"},
+        # "climate": {"type": "string"},
+        # "gravity": {"type": "string"},
+        # "terrain": {"type": "string"},
+        # "surface_water": {"type": "string"},
+        # "population": {"type": "string"},
+        # "residents": {"type": "array"},
+        # "films": {"type": "array"},
+        # "created": {"type": "string"},
+        # "edited": {"type": "string"},
+        # "url": {"type": "string"}
+
+        * validate response.results using jsonschema in context.planet_jsonschema
 
 
 # response = DotMap(json.loads(context.response.text))

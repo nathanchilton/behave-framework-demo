@@ -1,9 +1,17 @@
 Feature: The /planets route for The Star Wars API at swapi.dev
 
     Background:
-        * url
+        * url "https://swapi.dev/api"
+        * path "/planets"
 
-    Scenario:
+    Scenario: /planets returns a list of all planets
+
+        * print context.request_url
+        * method GET
+        * status 200
+        * print response
+        * breakpoint
+
 
 # Basic Endpoint Tests:
 

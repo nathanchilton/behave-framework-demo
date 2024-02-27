@@ -2,17 +2,24 @@ from behave import *
 from dotmap import DotMap
 from assertpy import assert_that
 from playwright.sync_api import Page
-import requests
+import requests, re
 
 # Karate-style step definitions
 
 
 @step("url {url}")
 def step_impl(context, url):
-    if "base_url" in url:
-        context.request_url = eval(f"context.{url}")
+    context.request_url = remove_outer_quotes(url)
+
+
+@step("path {path}")
+def step_impl(context, path):
+    if not "request_url" in context:
+        raise Exception(
+            'You must use "url" to define a "base url" before adding a "path".'
+        )
     else:
-        context.request_url = url
+        context.request_url += remove_outer_quotes(path)
 
 
 @step("header {key} = {value}")
@@ -67,6 +74,22 @@ def step_impl(context, method_name):
 @step("status {status_code}")
 def step_impl(context, status_code):
     assert_that(str(context.response.status_code)).is_equal_to(status_code)
+
+
+def remove_outer_quotes(string_value):
+    # if the string_value is a string, surrounded by double quotes
+    m = re.search('^"(.+)"$', string_value)
+    if m:
+        # set string_value to be just the part between the double quotes
+        string_value = m.group(1)
+
+    # if the string_value is a string, surrounded by single quotes
+    m = re.search("^'(.+)'$", string_value)
+    if m:
+        # set string_value to be just the part between the single quotes
+        string_value = m.group(1)
+
+    return string_value
 
 
 def transform_expected_value(expected_value, context):
@@ -152,6 +175,21 @@ def step_impl(context, variable_name):
 @step("def context.{variable_name} = {evaluate_as_code}")
 def step_impl(context, variable_name, evaluate_as_code):
     setattr(context, variable_name, eval(evaluate_as_code))
+
+
+@step("print {evaluate_as_code}")
+def step_impl(context, evaluate_as_code):
+    if evaluate_as_code == "response":
+        evaluate_as_code = "context.response.text"
+    if evaluate_as_code == "status":
+        evaluate_as_code = f'"status_code: " {context.response.status_code}'
+    eval(f"print({evaluate_as_code})")
+
+
+@step("breakpoint")
+def step_impl(context):
+    # Set a breakpoint on the next line
+    True
 
 
 @step("validate {json_object_name} using jsonschema in {json_schema_name}")

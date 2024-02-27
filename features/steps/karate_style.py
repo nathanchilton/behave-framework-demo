@@ -67,6 +67,16 @@ def step_impl(context, method_name):
             context.response = requests.put(
                 context.request_url, headers=headers, data=data
             )
+        case "PATCH":
+            print(f'I recognize the method: "{method_name}"')
+            context.response = requests.patch(
+                context.request_url, headers=headers, data=data
+            )
+        case "DELETE":
+            print(f'I recognize the method: "{method_name}"')
+            context.response = requests.delete(
+                context.request_url, headers=headers, data=data
+            )
         case _:
             raise (f"A method of {method_name} is not supported.")
 
@@ -182,7 +192,7 @@ def step_impl(context, evaluate_as_code):
     if evaluate_as_code == "response":
         evaluate_as_code = "context.response.text"
     if evaluate_as_code == "status":
-        evaluate_as_code = f'"status_code: " {context.response.status_code}'
+        evaluate_as_code = f'"status_code: {context.response.status_code}"'
     eval(f"print({evaluate_as_code})")
 
 

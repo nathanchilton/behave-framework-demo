@@ -9,9 +9,38 @@ Feature: The /planets route for The Star Wars API at swapi.dev
         * print context.request_url
         * method GET
         * status 200
+        * assert response.count == 60
+        * assert response.results.length == 10
         * print response
-        * breakpoint
+        # * breakpoint
 
+        * text context.jsonschema =
+            """
+            {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "number"
+                    },
+                    "next": {
+                        "type": "string"
+                    },
+                    "previous": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "results": {
+                        "type": "array"
+                    }
+                }
+            }
+            """
+        * validate response using jsonschema in context.jsonschema
+
+
+# response = DotMap(json.loads(context.response.text))
 
 # Basic Endpoint Tests:
 

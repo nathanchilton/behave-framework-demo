@@ -1,4 +1,4 @@
-@addition-demo
+@addition-demo @ui
 Feature: Easy Addition Form
 
     Background:

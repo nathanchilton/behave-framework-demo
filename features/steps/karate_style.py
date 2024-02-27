@@ -2,7 +2,7 @@ from behave import *
 from dotmap import DotMap
 from assertpy import assert_that
 from playwright.sync_api import Page
-import requests, re
+import requests, re, json, jsonschema
 
 # Karate-style step definitions
 

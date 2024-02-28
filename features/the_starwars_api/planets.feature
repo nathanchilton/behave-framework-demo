@@ -1,51 +1,14 @@
 Feature: The /planets route for The Star Wars API at swapi.dev
 
   Background:
-    * url "https://swapi.dev/api"
-    * path "/planets"
-
-  Scenario: /planets returns a list of all planets
-
-    * print context.request_url
-    * method GET
-    * status 200
-    * assert response.count == 60
-    * assert response.results.length == 10
-    * print response
-    * print status
-    # * breakpoint
-
-    # Validate top-level response
-    * text context.jsonschema =
-      """
-      {
-        "type": "object",
-        "properties": {
-          "count": {
-            "type": "number"
-          },
-          "next": {
-            "type": "string"
-          },
-          "previous": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "results": {
-            "type": "array"
-          }
-        }
-      }
-      """
-    * validate response using jsonschema in context.jsonschema
-
-    # Validate the values in the "results" array
+    * url "https://swapi.dev/api/planets"
+    # {
+    #   "type": "array",
+    #   "properties":
     * text context.planet_jsonschema =
       """
       {
-        "type": "array",
+        "type": "object",
         "properties": {
           "name": {
             "type": "string"
@@ -92,7 +55,47 @@ Feature: The /planets route for The Star Wars API at swapi.dev
         }
       }
       """
-    * validate response.results using jsonschema in context.planet_jsonschema
+
+  @focus
+  Scenario: /planets returns a list of all planets
+
+    * print context.request_url
+    * method GET
+    * status 200
+    * assert response.count == 60
+    * assert response.results.length == 10
+    * print response
+    * print status
+    # * breakpoint
+
+    # Validate top-level response
+    * text context.jsonschema =
+      """
+      {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          },
+          "next": {
+            "type": "string"
+          },
+          "previous": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "results": {
+            "type": "array"
+          }
+        }
+      }
+      """
+    * validate response using jsonschema in context.jsonschema
+
+    # Validate the values in the "results" array
+    * validate each response.results using jsonschema in context.planet_jsonschema
 
   # response = DotMap(json.loads(context.response.text))
 
@@ -100,6 +103,14 @@ Feature: The /planets route for The Star Wars API at swapi.dev
   # Basic Endpoint Tests:
   ########################
 
+  Scenario: /planets/:id/ returns information for a specific planet
+    * path "/1"
+    * print context.request_url
+    * method GET
+    * status 200
+    * print response
+
+    * validate response using jsonschema in context.planet_jsonschema
 
 
   # Test that /planets/ returns a list of all planets.
@@ -144,7 +155,7 @@ Feature: The /planets route for The Star Wars API at swapi.dev
   # Negative Tests:
   ##################
 
-  @focus
+  # @focus
   Scenario Outline: HTTP method is not supported: <method>
     Only GET requests are supported
     * method <method>

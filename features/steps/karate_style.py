@@ -1,8 +1,9 @@
 from behave import *
 from dotmap import DotMap
 from assertpy import assert_that
-from playwright.sync_api import Page
-import requests, re, json, jsonschema
+# from playwright.sync_api import Page
+import requests, re, json
+from jsonschema import validate, ValidationError, SchemaError
 
 # Karate-style step definitions
 
@@ -202,20 +203,30 @@ def step_impl(context):
     True
 
 
-@step("validate {json_object_name} using jsonschema in {json_schema_name}")
-def step_impl(context, json_object_name, json_schema_name):
-    from jsonschema import validate, ValidationError, SchemaError
-
-    response = DotMap(json.loads(context.response.text))
-
-    json_object = eval(json_object_name)
+def validate_json_object_using_schema(json_object, json_schema):
     if type(json_object) is DotMap:
         json_object = json_object.toDict()
     if type(json_object) is list and type(json_object[0]) is DotMap:
         json_object = list(map(lambda x: x.toDict(), json_object))
 
+    validate(instance=json_object, schema=json_schema)
+
+
+@step("validate {json_object_name} using jsonschema in {json_schema_name}")
+def step_impl(context, json_object_name, json_schema_name):
+
     json_schema = eval(json_schema_name)
     # if type(json_schema) is str:
     json_schema = json.loads(json_schema)
 
-    validate(json_object, json_schema)
+    response = DotMap(json.loads(context.response.text))
+
+    if json_object_name.startswith("each "):
+        validating_a_list = True
+        json_object_name = json_object_name.removeprefix("each ")
+
+    json_object = eval(json_object_name)
+
+    json_object_list = json_object if "validating_a_list" in locals() else [json_object]
+    for element in json_object_list:
+        validate_json_object_using_schema(element, json_schema)

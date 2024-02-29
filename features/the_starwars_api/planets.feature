@@ -1,10 +1,10 @@
 Feature: The /planets route for The Star Wars API at swapi.dev
 
   Background:
+    # All the URLs in this feature file will use the following as the "base URL"
     * url "https://swapi.dev/api/planets"
-    # {
-    #   "type": "array",
-    #   "properties":
+
+    # This jsonschema is used for multiple tests:
     * text context.planet_jsonschema =
       """
       {
@@ -14,13 +14,16 @@ Feature: The /planets route for The Star Wars API at swapi.dev
             "type": "string"
           },
           "rotation_period": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^\\d+$"
           },
           "orbital_period": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^\\d+$"
           },
           "diameter": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^\\d+$"
           },
           "climate": {
             "type": "string"
@@ -35,7 +38,8 @@ Feature: The /planets route for The Star Wars API at swapi.dev
             "type": "string"
           },
           "population": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^\\d+$"
           },
           "residents": {
             "type": "array"
@@ -44,10 +48,12 @@ Feature: The /planets route for The Star Wars API at swapi.dev
             "type": "array"
           },
           "created": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+Z$"
           },
           "edited": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+Z$"
           },
           "url": {
             "type": "string"
@@ -56,17 +62,19 @@ Feature: The /planets route for The Star Wars API at swapi.dev
       }
       """
 
-  @focus
   Scenario: /planets returns a list of all planets
-
-    * print context.request_url
+    # Send a GET request to the URL defined in the background
     * method GET
+
+    # Assert that the HTTP status code in the response is 200
     * status 200
+
+    # Print the response to the console (just for fun/debugging)
+    * print response
+
+    # Make some assertions about the content of the response
     * assert response.count == 60
     * assert response.results.length == 10
-    * print response
-    * print status
-    # * breakpoint
 
     # Validate top-level response
     * text context.jsonschema =
@@ -94,24 +102,108 @@ Feature: The /planets route for The Star Wars API at swapi.dev
       """
     * validate response using jsonschema in context.jsonschema
 
-    # Validate the values in the "results" array
+    # Validate each of the values in the "results" array
     * validate each response.results using jsonschema in context.planet_jsonschema
 
-  # response = DotMap(json.loads(context.response.text))
+  # Get the last page of results
 
   ########################
   # Basic Endpoint Tests:
   ########################
 
-  Scenario: /planets/:id/ returns information for a specific planet
+  # @focus
+  Scenario: /planets/:id returns information for a specific planet
+    # Add /1 to the end of the "base URL"
     * path "/1"
+
+    * method GET
+
+    * status 200
+    * print response
+    * validate response using jsonschema in context.planet_jsonschema
+
+  @focus
+  Scenario: Wookiee Format
+    # Add /1 to the end of the "base URL"
+    * path "/1"
+    * path "?format=wookiee"
+
+    * method GET
+
+    * status 200
+    * print response
+    # * text context.planet_jsonschema_wookiee =
+    # """
+    # {
+    #   "type": "object",
+    #   "properties": {
+    #     "whrascwo": {
+    #       "type": "string"
+    #     },
+    #     "rcooaoraaoahoowh_akworcahoowa": {
+    #       "type": "string",
+    #       "pattern": "^\\d+$"
+    #     },
+    #     "oorcrhahaoraan_akworcahoowa": {
+    #       "type": "string",
+    #       "pattern": "^\\d+$"
+    #     },
+    #     "waahrascwoaoworc": {
+    #       "type": "string",
+    #       "pattern": "^\\d+$"
+    #     },
+    #     "oaanahscraaowo": {
+    #       "type": "string"
+    #     },
+    #     "rrrcrahoahaoro": {
+    #       "type": "string"
+    #     },
+    #     "aoworcrcraahwh": {
+    #       "type": "string"
+    #     },
+    #     "churcwwraoawo_ohraaoworc": {
+    #       "type": "string"
+    #     },
+    #     "akooakhuanraaoahoowh": {
+    #       "type": "string",
+    #       "pattern": "^\\d+$"
+    #     },
+    #     "rcwocahwawowhaoc": {
+    #       "type": "array"
+    #     },
+    #     "wwahanscc": {
+    #       "type": "array"
+    #     },
+    #     "oarcworaaowowa": {
+    #       "type": "string",
+    #       "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+Z$"
+    #     },
+    #     "wowaahaowowa": {
+    #       "type": "string",
+    #       "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+Z$"
+    #     },
+    #     "hurcan": {
+    #       "type": "string"
+    #     }
+    #   }
+    # }
+    # """
+    * breakpoint
+    * validate response using jsonschema in context.planet_jsonschema
+
+  # * validate response using jsonschema in context.planet_jsonschema_wookiee
+
+
+  Scenario: /planets/schema returns the schema
+    # The documentation clearly states that:
+    #   /planets/schema/ -- view the JSON schema for this resource
+    # Note: This test is failing.  The API is returning a 404.
+    * path "/schema/"
     * print context.request_url
     * method GET
     * status 200
-    * print response
 
-    * validate response using jsonschema in context.planet_jsonschema
-
+  Scenario:
 
   # Test that /planets/ returns a list of all planets.
   # Test that /planets/:id/ returns information for a specific planet.

@@ -133,8 +133,14 @@ def step_impl(context, dot_map_value, expected_value):
     response = DotMap(json.loads(context.response.text))
 
     left_side = f"response.{dot_map_value}"
+
+    # if the length "property" is desired, calculate it
     if left_side.endswith(".length"):
         left_side = f"len({left_side.removesuffix('.length')})"
+
+    # a DotMap object apparently has a "next" method, so we need to use a different syntax:
+    if left_side.endswith(".next"):
+        left_side = f"{left_side.removesuffix('.next')}['next']"
 
     left_side = eval(left_side)
 

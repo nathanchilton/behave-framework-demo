@@ -128,7 +128,7 @@ Feature: The /planets route for The Star Wars API at swapi.dev
   # Basic Endpoint Tests:
   ########################
 
-  @focus
+  # @focus
   Scenario: /planets/:id returns information for a specific planet
     # Add /1 to the end of the "base URL"
     * path "/1"
@@ -138,6 +138,20 @@ Feature: The /planets route for The Star Wars API at swapi.dev
     * status 200
     * print response
     * validate response using jsonschema in context.planet_jsonschema
+
+  @focus
+  Scenario: Search for planet by name
+    # Add /1 to the end of the "base URL"
+    * path "/?search=Dagobah"
+
+    * method GET
+
+    * status 200
+    * print response
+    * assert response.count == 1
+    * assert response.next == null
+    * assert response.previous == null
+    * validate response.results[0] using jsonschema in context.planet_jsonschema
 
   # @focus
   Scenario: Wookiee Format
@@ -225,14 +239,7 @@ Feature: The /planets route for The Star Wars API at swapi.dev
     # * validate response using jsonschema in context.planet_jsonschema
     * validate response using jsonschema in context.planet_jsonschema_wookiee
 
-  Scenario: /planets/schema returns the schema
-    # The documentation clearly states that:
-    #   /planets/schema/ -- view the JSON schema for this resource
-    # Note: This test is failing.  The API is returning a 404.
-    * path "/schema/"
-    * print context.request_url
-    * method GET
-    * status 200
+
 
   # Test that /planets/ returns a list of all planets.
   # Test that /planets/:id/ returns information for a specific planet.
@@ -243,7 +250,10 @@ Feature: The /planets route for The Star Wars API at swapi.dev
   # Check the data types of attributes (e.g., string, number, array).
   # Ensure required fields are present.
   # Verify that all URLs in the response are valid and accessible.
+
+  #############################
   # Search Functionality Tests:
+  #############################
 
   # Test searching for planets by name using various cases (e.g., uppercase, lowercase, mixed case).
   # Verify that partial matches work correctly.
@@ -252,7 +262,10 @@ Feature: The /planets route for The Star Wars API at swapi.dev
 
   # Test fetching planet data in both JSON and Wookiee encoding.
   # Verify that Wookiee-encoded responses are correctly translated and formatted.
+
+  ###############################
   # Boundary and Edge Case Tests:
+  ###############################
 
   # Test endpoints with invalid IDs (e.g., non-existent IDs, negative IDs).
   # Test endpoints with extreme values for numeric attributes (e.g., very large or very small diameters, orbital periods).
@@ -291,29 +304,38 @@ Feature: The /planets route for The Star Wars API at swapi.dev
       | PATCH  |
       | DELETE |
 
-# Test endpoints with invalid or missing parameters.
-# Test endpoints with unsupported HTTP methods (e.g., POST, PUT, DELETE).
-# Authentication and Authorization Tests (if applicable):
+  # Test endpoints with invalid or missing parameters.
+  # Test endpoints with unsupported HTTP methods (e.g., POST, PUT, DELETE).
+  # Authentication and Authorization Tests (if applicable):
 
-# Test endpoints with valid and invalid authentication tokens.
-# Verify that unauthorized users cannot access restricted endpoints.
+  # Test endpoints with valid and invalid authentication tokens.
+  # Verify that unauthorized users cannot access restricted endpoints.
 
-########################
-# Error Handling Tests:
-########################
+  ########################
+  # Error Handling Tests:
+  ########################
 
-# Test endpoints with malformed requests to ensure appropriate error responses are returned (e.g., invalid JSON, missing parameters).
-# Verify that error responses include meaningful error messages and appropriate HTTP status codes.
+  # Test endpoints with malformed requests to ensure appropriate error responses are returned (e.g., invalid JSON, missing parameters).
+  # Verify that error responses include meaningful error messages and appropriate HTTP status codes.
 
-#####################
-# Concurrency Tests:
-#####################
+  #####################
+  # Concurrency Tests:
+  #####################
 
-# Test the API under concurrent requests to check for any race conditions or thread safety issues.
+  # Test the API under concurrent requests to check for any race conditions or thread safety issues.
 
-######################
-# Documentation Tests:
-######################
+  ######################
+  # Documentation Tests:
+  ######################
 
-# Verify that the API documentation accurately reflects the behavior of the endpoints.
-# Ensure that all endpoints, parameters, and responses are well-documented and up-to-date.
+  # Verify that the API documentation accurately reflects the behavior of the endpoints.
+  # Ensure that all endpoints, parameters, and responses are well-documented and up-to-date.
+
+  Scenario: /planets/schema returns the schema
+    # The documentation clearly states that:
+    #   /planets/schema/ -- view the JSON schema for this resource
+    # Note: This test is failing.  The API is returning a 404.
+    * path "/schema/"
+    * print context.request_url
+    * method GET
+    * status 200

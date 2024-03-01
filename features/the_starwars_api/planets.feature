@@ -238,27 +238,30 @@ Feature: The /planets route for The Star Wars API at swapi.dev
     * validate response using jsonschema in context.planet_jsonschema_wookiee
 
   @focus
-  Scenario Outline: Search for planet by name (<format> format)
+  Scenario Outline: Search for planet by name: <search_term> (<format> format)
     # Add /1 to the end of the "base URL"
-    * path "<path>"
+    * path "/?search=<search_term>"
 
     * method GET
 
     * status 200
     * print response
-    * assert response.count == 1
-    * assert response.next == null
+    * assert response.count == <expected_count>
+    * assert response.next == <expected_next_value>
     * assert response.previous == null
-    * validate response.results[0] using jsonschema in context.<schema>
+    * if(<expected_count> > 0) validate response.results[0] using jsonschema in context.<schema>
 
     Examples:
-      | format  | path             | schema            |
-      | default | /?search=Dagobah | planet_jsonschema |
+      | format  | search_term | schema            | expected_count | expected_next_value                              |
+      | default | Dagobah     | planet_jsonschema | 1              | null                                             |
+      | default | dagobah     | planet_jsonschema | 1              | null                                             |
+      | default | d           | planet_jsonschema | 16             | "https://swapi.dev/api/planets/?search=d&page=2" |
+      | default | Earth       | planet_jsonschema | 0              | null                                             |
 
-    @known-failure
-    Examples: Fails because null is converted to Wookiee, without quotation marks
-      | format  | path                            | schema                    |
-      | wookiee | /?search=Dagobah&format=wookiee | planet_jsonschema_wookiee |
+  # @known-failure
+  # Examples: Fails because null is converted to Wookiee, without quotation marks
+  #   | format  | search_term            | schema                    |
+  #   | wookiee | Dagobah&format=wookiee | planet_jsonschema_wookiee |
 
   # Test that /planets/ returns a list of all planets.
   # Test that /planets/:id/ returns information for a specific planet.

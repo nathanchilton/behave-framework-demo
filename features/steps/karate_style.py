@@ -120,6 +120,8 @@ def check_type(value, type):
     match type:
         case "#number":
             assert_that(value).is_not_nan()
+        case "#string":
+            assert_that(value).is_type_of(str)
         case _:
             raise Exception(f"We do not yet support a type of '{type}'")
 
@@ -233,3 +235,8 @@ def step_impl(context, json_object_name, json_schema_name):
     for element in json_object_list:
 
         validate_json_object_using_schema(element, json_schema)
+
+@step("if({test}) {step}")
+def step_impl(context, test, step):
+    if(eval(test) == True):
+        context.execute_steps(f"* {step}")

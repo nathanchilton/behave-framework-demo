@@ -122,7 +122,7 @@ Feature: The /planets route for The Star Wars API at swapi.dev
     # Validate each of the values in the "results" array
     * validate each response.results using jsonschema in context.planet_jsonschema
 
-  # @focus
+
   Scenario: Exercise pagination
     # Get the first page of planets
     * method GET
@@ -146,7 +146,7 @@ Feature: The /planets route for The Star Wars API at swapi.dev
   # Basic Endpoint Tests:
   ########################
 
-  # @focus
+
   Scenario: /planets/:id returns information for a specific planet
     # Add /1 to the end of the "base URL"
     * path "/1"
@@ -171,7 +171,7 @@ Feature: The /planets route for The Star Wars API at swapi.dev
     * assert response.previous == null
     * validate response.results[0] using jsonschema in context.planet_jsonschema
 
-  # @focus
+
   Scenario: Wookiee Format
     # Add /1 to the end of the "base URL"
     * path "/1"

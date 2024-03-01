@@ -122,7 +122,25 @@ Feature: The /planets route for The Star Wars API at swapi.dev
     # Validate each of the values in the "results" array
     * validate each response.results using jsonschema in context.planet_jsonschema
 
-  # Get the last page of results
+  # @focus
+  Scenario: Exercise pagination
+    # Get the first page of planets
+    * method GET
+    * assert response.count == 60
+    * assert response.results.length == 10
+    * assert response.next == "https://swapi.dev/api/planets/?page=2"
+    * assert response.previous == null
+
+    # Get the last page
+    * print context.request_url
+    * path "/?page=6"
+    * print context.request_url
+    * breakpoint
+    * method GET
+    * assert response.count == 60
+    * assert response.results.length == 10
+    * assert response.next == null
+    * assert response.previous == "https://swapi.dev/api/planets/?page=5"
 
   ########################
   # Basic Endpoint Tests:
@@ -139,7 +157,7 @@ Feature: The /planets route for The Star Wars API at swapi.dev
     * print response
     * validate response using jsonschema in context.planet_jsonschema
 
-  @focus
+
   Scenario: Search for planet by name
     # Add /1 to the end of the "base URL"
     * path "/?search=Dagobah"
@@ -162,7 +180,6 @@ Feature: The /planets route for The Star Wars API at swapi.dev
     * method GET
 
     * status 200
-    * print response
     * text context.planet_jsonschema_wookiee =
       """
       {
@@ -235,11 +252,7 @@ Feature: The /planets route for The Star Wars API at swapi.dev
         ]
       }
       """
-    * breakpoint
-    # * validate response using jsonschema in context.planet_jsonschema
     * validate response using jsonschema in context.planet_jsonschema_wookiee
-
-
 
   # Test that /planets/ returns a list of all planets.
   # Test that /planets/:id/ returns information for a specific planet.
@@ -304,13 +317,6 @@ Feature: The /planets route for The Star Wars API at swapi.dev
       | PATCH  |
       | DELETE |
 
-  # Test endpoints with invalid or missing parameters.
-  # Test endpoints with unsupported HTTP methods (e.g., POST, PUT, DELETE).
-  # Authentication and Authorization Tests (if applicable):
-
-  # Test endpoints with valid and invalid authentication tokens.
-  # Verify that unauthorized users cannot access restricted endpoints.
-
   ########################
   # Error Handling Tests:
   ########################
@@ -318,18 +324,11 @@ Feature: The /planets route for The Star Wars API at swapi.dev
   # Test endpoints with malformed requests to ensure appropriate error responses are returned (e.g., invalid JSON, missing parameters).
   # Verify that error responses include meaningful error messages and appropriate HTTP status codes.
 
-  #####################
-  # Concurrency Tests:
-  #####################
-
-  # Test the API under concurrent requests to check for any race conditions or thread safety issues.
 
   ######################
   # Documentation Tests:
   ######################
 
-  # Verify that the API documentation accurately reflects the behavior of the endpoints.
-  # Ensure that all endpoints, parameters, and responses are well-documented and up-to-date.
 
   Scenario: /planets/schema returns the schema
     # The documentation clearly states that:

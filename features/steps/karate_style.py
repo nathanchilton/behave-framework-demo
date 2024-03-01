@@ -2,7 +2,7 @@ from behave import *
 from dotmap import DotMap
 from assertpy import assert_that
 # from playwright.sync_api import Page
-import requests, re, json
+import requests, re, json, time
 from jsonschema import validate, ValidationError, SchemaError
 
 # Karate-style step definitions
@@ -229,4 +229,6 @@ def step_impl(context, json_object_name, json_schema_name):
 
     json_object_list = json_object if "validating_a_list" in locals() else [json_object]
     for element in json_object_list:
+        # print("Checking...")
+        # time.sleep(3)
         validate_json_object_using_schema(element, json_schema)

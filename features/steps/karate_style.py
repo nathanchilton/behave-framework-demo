@@ -52,7 +52,6 @@ def step_impl(context, method_name):
 
     match method_name.upper():
         case "GET":
-            print(f'I recognize the method: "{method_name}"')
             context.response = requests.get(context.request_url, headers=headers)
         case "POST":
             print(f'I recognize the method: "{method_name}"')
@@ -64,17 +63,14 @@ def step_impl(context, method_name):
                 allow_redirects=False,
             )
         case "PUT":
-            print(f'I recognize the method: "{method_name}"')
             context.response = requests.put(
                 context.request_url, headers=headers, data=data
             )
         case "PATCH":
-            print(f'I recognize the method: "{method_name}"')
             context.response = requests.patch(
                 context.request_url, headers=headers, data=data
             )
         case "DELETE":
-            print(f'I recognize the method: "{method_name}"')
             context.response = requests.delete(
                 context.request_url, headers=headers, data=data
             )

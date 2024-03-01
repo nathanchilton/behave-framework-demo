@@ -78,108 +78,6 @@ Feature: The /planets route for The Star Wars API at swapi.dev
         ]
       }
       """
-
-  Scenario: /planets returns a list of all planets
-    # Send a GET request to the URL defined in the background
-    * method GET
-
-    # Assert that the HTTP status code in the response is 200
-    * status 200
-
-    # Print the response to the console (just for fun/debugging)
-    * print response
-
-    # Make some assertions about the content of the response
-    * assert response.count == 60
-    * assert response.results.length == 10
-
-    # Validate top-level response
-    * text context.jsonschema =
-      """
-      {
-        "type": "object",
-        "properties": {
-          "count": {
-            "type": "number"
-          },
-          "next": {
-            "type": "string"
-          },
-          "previous": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "results": {
-            "type": "array"
-          }
-        }
-      }
-      """
-    * validate response using jsonschema in context.jsonschema
-
-    # Validate each of the values in the "results" array
-    * validate each response.results using jsonschema in context.planet_jsonschema
-
-
-  Scenario: Exercise pagination
-    # Get the first page of planets
-    * method GET
-    * assert response.count == 60
-    * assert response.results.length == 10
-    * assert response.next == "https://swapi.dev/api/planets/?page=2"
-    * assert response.previous == null
-
-    # Get the last page
-    * print context.request_url
-    * path "/?page=6"
-    * print context.request_url
-    * breakpoint
-    * method GET
-    * assert response.count == 60
-    * assert response.results.length == 10
-    * assert response.next == null
-    * assert response.previous == "https://swapi.dev/api/planets/?page=5"
-
-  ########################
-  # Basic Endpoint Tests:
-  ########################
-
-
-  Scenario: /planets/:id returns information for a specific planet
-    # Add /1 to the end of the "base URL"
-    * path "/1"
-
-    * method GET
-
-    * status 200
-    * print response
-    * validate response using jsonschema in context.planet_jsonschema
-
-
-  Scenario: Search for planet by name
-    # Add /1 to the end of the "base URL"
-    * path "/?search=Dagobah"
-
-    * method GET
-
-    * status 200
-    * print response
-    * assert response.count == 1
-    * assert response.next == null
-    * assert response.previous == null
-    * validate response.results[0] using jsonschema in context.planet_jsonschema
-
-
-  Scenario: Wookiee Format
-    # Add /1 to the end of the "base URL"
-    * path "/1"
-    * path "?format=wookiee"
-
-    * method GET
-
-    * status 200
     * text context.planet_jsonschema_wookiee =
       """
       {
@@ -252,7 +150,115 @@ Feature: The /planets route for The Star Wars API at swapi.dev
         ]
       }
       """
+
+  Scenario: /planets returns a list of all planets
+    # Send a GET request to the URL defined in the background
+    * method GET
+
+    # Assert that the HTTP status code in the response is 200
+    * status 200
+
+    # Print the response to the console (just for fun/debugging)
+    * print response
+
+    # Make some assertions about the content of the response
+    * assert response.count == 60
+    * assert response.results.length == 10
+
+    # Validate top-level response
+    * text context.jsonschema =
+      """
+      {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          },
+          "next": {
+            "type": "string"
+          },
+          "previous": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "results": {
+            "type": "array"
+          }
+        }
+      }
+      """
+    * validate response using jsonschema in context.jsonschema
+
+    # Validate each of the values in the "results" array
+    * validate each response.results using jsonschema in context.planet_jsonschema
+
+  Scenario: Exercise pagination
+    # Get the first page of planets
+    * method GET
+    * assert response.count == 60
+    * assert response.results.length == 10
+    * assert response.next == "https://swapi.dev/api/planets/?page=2"
+    * assert response.previous == null
+
+    # Get the last page
+    * print context.request_url
+    * path "/?page=6"
+    * print context.request_url
+    * breakpoint
+    * method GET
+    * assert response.count == 60
+    * assert response.results.length == 10
+    * assert response.next == null
+    * assert response.previous == "https://swapi.dev/api/planets/?page=5"
+
+  ########################
+  # Basic Endpoint Tests:
+  ########################
+
+  Scenario: /planets/:id returns information for a specific planet
+    # Add /1 to the end of the "base URL"
+    * path "/1"
+
+    * method GET
+
+    * status 200
+    * print response
+    * validate response using jsonschema in context.planet_jsonschema
+
+  Scenario: Wookiee Format
+    # Add /1 to the end of the "base URL"
+    * path "/1"
+    * path "?format=wookiee"
+
+    * method GET
+
+    * status 200
     * validate response using jsonschema in context.planet_jsonschema_wookiee
+
+  @focus
+  Scenario Outline: Search for planet by name (<format> format)
+    # Add /1 to the end of the "base URL"
+    * path "<path>"
+
+    * method GET
+
+    * status 200
+    * print response
+    * assert response.count == 1
+    * assert response.next == null
+    * assert response.previous == null
+    * validate response.results[0] using jsonschema in context.<schema>
+
+    Examples:
+      | format  | path             | schema            |
+      | default | /?search=Dagobah | planet_jsonschema |
+
+    @known-failure
+    Examples: Fails because null is converted to Wookiee, without quotation marks
+      | format  | path                            | schema                    |
+      | wookiee | /?search=Dagobah&format=wookiee | planet_jsonschema_wookiee |
 
   # Test that /planets/ returns a list of all planets.
   # Test that /planets/:id/ returns information for a specific planet.
@@ -302,7 +308,6 @@ Feature: The /planets route for The Star Wars API at swapi.dev
   # Negative Tests:
   ##################
 
-  # @focus
   Scenario Outline: HTTP method is not supported: <method>
     Only GET requests are supported
     * method <method>
@@ -324,12 +329,11 @@ Feature: The /planets route for The Star Wars API at swapi.dev
   # Test endpoints with malformed requests to ensure appropriate error responses are returned (e.g., invalid JSON, missing parameters).
   # Verify that error responses include meaningful error messages and appropriate HTTP status codes.
 
-
   ######################
   # Documentation Tests:
   ######################
 
-
+  @known-failure
   Scenario: /planets/schema returns the schema
     # The documentation clearly states that:
     #   /planets/schema/ -- view the JSON schema for this resource

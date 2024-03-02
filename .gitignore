@@ -1,0 +1,9 @@
+# Python-related files
+venv/
+*.pyc
+__pycache__
+
+# Misc Files to exclude
+env.json
+.DS_Store
+

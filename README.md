@@ -22,6 +22,14 @@ After following the instructions in the [Installation](#installation) section of
 behave -t @karate-style
 ```
 
+**Note:**
+
+In the course of writing these example tests, I found two defects.  The tests which found the defects have been tagged with `@found-defect`.  If you would like to run only the tests which are expected to be passing, just tell `behave` to exclude tests with this tag:
+
+``` bash
+behave -t @karate-style -t ~@found-defect
+```
+
 ## Background
 
 Originally developed in 2019, this project stemmed from the author's experience in test automation with Ruby, particularly using Cucumber with SitePrism. With a preference for Gherkin syntax, the author sought to explore similar capabilities in Python. Behave was chosen due to its similarity to Cucumber. While no direct equivalent of SitePrism was found for Python, the author crafted a basic page object model after researching various approaches and articles.

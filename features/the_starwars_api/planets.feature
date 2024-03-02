@@ -253,7 +253,7 @@ Feature: The /planets route for The Star Wars API at swapi.dev
       | default | d           | planet_jsonschema | 16             | "https://swapi.dev/api/planets/?search=d&page=2" |
       | default | Dune        | planet_jsonschema | 0              | null                                             |
 
-    @known-failure
+    @found-defect
     Examples: Fails because null is converted to Wookiee, without quotation marks
       | format  | search_term            | schema                    |
       | wookiee | Dagobah&format=wookiee | planet_jsonschema_wookiee |
@@ -272,7 +272,7 @@ Feature: The /planets route for The Star Wars API at swapi.dev
       | PATCH  |
       | DELETE |
 
-  @known-failure
+  @found-defect
   Scenario: /planets/schema returns the schema
     # The documentation clearly states that:
     #   /planets/schema/ -- view the JSON schema for this resource

@@ -54,7 +54,6 @@ def step_impl(context, method_name):
         case "GET":
             context.response = requests.get(context.request_url, headers=headers)
         case "POST":
-            print(f'I recognize the method: "{method_name}"')
             context.response = requests.post(
                 context.request_url,
                 headers=headers,
@@ -236,7 +235,8 @@ def step_impl(context, json_object_name, json_schema_name):
 
         validate_json_object_using_schema(element, json_schema)
 
+
 @step("if({test}) {step}")
 def step_impl(context, test, step):
-    if(eval(test) == True):
+    if eval(test) == True:
         context.execute_steps(f"* {step}")

@@ -213,10 +213,6 @@ Feature: The /planets route for The Star Wars API at swapi.dev
     * assert response.next == null
     * assert response.previous == "https://swapi.dev/api/planets/?page=5"
 
-  ########################
-  # Basic Endpoint Tests:
-  ########################
-
   Scenario: /planets/:id returns information for a specific planet
     # Add /1 to the end of the "base URL"
     * path "/1"
@@ -237,7 +233,6 @@ Feature: The /planets route for The Star Wars API at swapi.dev
     * status 200
     * validate response using jsonschema in context.planet_jsonschema_wookiee
 
-  @focus
   Scenario Outline: Search for planet by name: <search_term> (<format> format)
     # Add /1 to the end of the "base URL"
     * path "/?search=<search_term>"
@@ -256,60 +251,12 @@ Feature: The /planets route for The Star Wars API at swapi.dev
       | default | Dagobah     | planet_jsonschema | 1              | null                                             |
       | default | dagobah     | planet_jsonschema | 1              | null                                             |
       | default | d           | planet_jsonschema | 16             | "https://swapi.dev/api/planets/?search=d&page=2" |
-      | default | Earth       | planet_jsonschema | 0              | null                                             |
+      | default | Dune        | planet_jsonschema | 0              | null                                             |
 
-  # @known-failure
-  # Examples: Fails because null is converted to Wookiee, without quotation marks
-  #   | format  | search_term            | schema                    |
-  #   | wookiee | Dagobah&format=wookiee | planet_jsonschema_wookiee |
-
-  # Test that /planets/ returns a list of all planets.
-  # Test that /planets/:id/ returns information for a specific planet.
-  # Test that /planets/schema/ returns the JSON schema for the planets resource.
-  # Data Validation Tests:
-
-  # Validate the structure of the response JSON against the expected schema.
-  # Check the data types of attributes (e.g., string, number, array).
-  # Ensure required fields are present.
-  # Verify that all URLs in the response are valid and accessible.
-
-  #############################
-  # Search Functionality Tests:
-  #############################
-
-  # Test searching for planets by name using various cases (e.g., uppercase, lowercase, mixed case).
-  # Verify that partial matches work correctly.
-  # Test searching for planets that don't exist to ensure appropriate error handling.
-  # Encoding Tests:
-
-  # Test fetching planet data in both JSON and Wookiee encoding.
-  # Verify that Wookiee-encoded responses are correctly translated and formatted.
-
-  ###############################
-  # Boundary and Edge Case Tests:
-  ###############################
-
-  # Test endpoints with invalid IDs (e.g., non-existent IDs, negative IDs).
-  # Test endpoints with extreme values for numeric attributes (e.g., very large or very small diameters, orbital periods).
-  # Test endpoints with empty or null values for optional attributes.
-
-  #####################
-  # Performance Tests:
-  #####################
-
-  # Test the response time of endpoints to ensure they meet performance requirements.
-  # Execute load tests to assess how the API handles concurrent requests and heavy traffic.
-
-  ####################
-  # Regression Tests:
-  ####################
-
-  # Re-run tests for previously identified issues to ensure they have been fixed.
-  # Test for regression by verifying that fixed issues remain resolved.
-
-  ##################
-  # Negative Tests:
-  ##################
+    @known-failure
+    Examples: Fails because null is converted to Wookiee, without quotation marks
+      | format  | search_term            | schema                    |
+      | wookiee | Dagobah&format=wookiee | planet_jsonschema_wookiee |
 
   Scenario Outline: HTTP method is not supported: <method>
     Only GET requests are supported
@@ -324,17 +271,6 @@ Feature: The /planets route for The Star Wars API at swapi.dev
       | PUT    |
       | PATCH  |
       | DELETE |
-
-  ########################
-  # Error Handling Tests:
-  ########################
-
-  # Test endpoints with malformed requests to ensure appropriate error responses are returned (e.g., invalid JSON, missing parameters).
-  # Verify that error responses include meaningful error messages and appropriate HTTP status codes.
-
-  ######################
-  # Documentation Tests:
-  ######################
 
   @known-failure
   Scenario: /planets/schema returns the schema

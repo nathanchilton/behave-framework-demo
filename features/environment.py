@@ -8,9 +8,7 @@ def before_all(context):
     playwright = sync_playwright().start()
     context.playwright = playwright
 
-    browser_ = playwright.chromium.launch(headless=False)
-    # context_ = browser_.new_context()
-    # context.page = context_.new_page()
+    context.browser = playwright.chromium.launch(headless=False)
 
 
 def before_tag(context, tag):

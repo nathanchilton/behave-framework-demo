@@ -118,6 +118,12 @@ Originally developed in 2019, this project stemmed from the author's experience 
     behave -t @ui
     ```
 
+- To execute just the "Karate-style" tests:
+
+    ``` bash
+    behave -t @karate-style -t ~@found-defect
+    ```
+
 - To execute tests in parallel:
 
     ```bash

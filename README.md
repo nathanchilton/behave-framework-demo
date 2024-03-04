@@ -22,6 +22,57 @@ After following the instructions in the [Installation](#installation) section of
 behave -t @karate-style
 ```
 
+### Example of a Karate-style scenario
+
+Scenarios like this can be written and modified, without the need to write any new code:
+
+``` Feature
+  Background:
+    # All the URLs in this feature file will use the following as the "base URL"
+    * url "https://swapi.dev/api/planets"
+
+  Scenario: /planets returns a list of all planets
+    # Send a GET request to the URL defined in the background
+    * method GET
+
+    # Assert that the HTTP status code in the response is 200
+    * status 200
+
+    # Make some assertions about the content of the response
+    * assert response.count == 60
+    * assert response.results.length == 10
+
+    # Validate top-level response
+    * text context.jsonschema =
+      """
+      {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          },
+          "next": {
+            "type": "string"
+          },
+          "previous": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "results": {
+            "type": "array"
+          }
+        }
+      }
+      """
+    * validate response using jsonschema in context.jsonschema
+
+    # Validate each of the values in the "results" array
+    * validate each response.results using jsonschema in context.planet_jsonschema
+
+```
+
 **Note:**
 
 In the course of writing these example tests, I found two defects in [The Star Wars API](https://swapi.dev/).  The tests which found the defects have been tagged with `@found-defect`.  If you would like to run only the tests which are expected to be passing, just tell `behave` to exclude tests with this tag:

@@ -9,7 +9,7 @@ csscompressor==0.9.5
 dotmap==1.3.30
 greenlet==3.0.3
 htmlmin==0.1.12
-idna==3.6
+idna==3.7
 Jinja2==3.1.3
 jsonschema==4.21.1
 jsonschema-specifications==2023.12.1

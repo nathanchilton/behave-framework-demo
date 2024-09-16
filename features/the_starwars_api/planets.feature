@@ -247,16 +247,16 @@ Feature: The /planets route for The Star Wars API at swapi.dev
     * if(<expected_count> > 0) validate response.results[0] using jsonschema in context.<schema>
 
     Examples:
-      | format  | search_term | schema            | expected_count | expected_next_value                              |
-      | default | Dagobah     | planet_jsonschema | 1              | null                                             |
-      | default | dagobah     | planet_jsonschema | 1              | null                                             |
-      | default | d           | planet_jsonschema | 16             | "https://swapi.dev/api/planets/?search=d&page=2" |
-      | default | Dune        | planet_jsonschema | 0              | null                                             |
+      | format  | search_term            | schema                    | expected_count | expected_next_value                              |
+      | default | Dagobah                | planet_jsonschema         | 1              | null                                             |
+      | default | dagobah                | planet_jsonschema         | 1              | null                                             |
+      | default | d                      | planet_jsonschema         | 16             | "https://swapi.dev/api/planets/?search=d&page=2" |
+      | default | Dune                   | planet_jsonschema         | 0              | null                                             |
 
     @found-defect
-    Examples: Fails because null is converted to Wookiee, without quotation marks
-      | format  | search_term            | schema                    |
-      | wookiee | Dagobah&format=wookiee | planet_jsonschema_wookiee |
+      Examples: Fails because null is converted to Wookiee, without quotation marks
+      | format  | search_term            | schema                    | expected_count | expected_next_value                              |
+      | wookiee | Dagobah&format=wookiee | planet_jsonschema_wookiee | 1              | null                                             |
 
   Scenario Outline: HTTP method is not supported: <method>
     Only GET requests are supported

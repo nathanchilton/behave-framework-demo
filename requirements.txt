@@ -6,7 +6,7 @@ behavex-images==3.0.6
 certifi==2024.8.30
 charset-normalizer==3.3.2
 click==8.1.7
-configobj==5.0.8
+configobj==5.0.9
 csscompressor==0.9.5
 dotmap==1.3.30
 greenlet==3.0.3

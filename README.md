@@ -97,7 +97,7 @@ Originally developed in 2019, this project stemmed from the author's experience 
 
 ### Prerequisites
 
-- Python 3 installed
+- Python 3.10 (or newer) installed
 - Ensure that the `python` and `pip` commands are linked to Python 3
 - If both Python 2 and Python 3 are installed, you _may_ need to use `python3` and `pip3` instead of `python` and `pip`
 - Using macOS, Ubuntu Linux, or Windows
